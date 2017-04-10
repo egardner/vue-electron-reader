@@ -16,11 +16,12 @@
 
 <script>
  import _ from 'lodash'
+ import store from '../store.js'
  export default {
    name: 'book-info',
    data () {
      return {
-       books: require('../../../static/classics.json')
+       books: store.state.books
      }
    },
    computed: {
@@ -29,7 +30,8 @@
      },
      book () {
        return _.find(this.books, (b) => {
-         return String(b.id) === this.$route.params.id
+         let bookPath = b.id.split('/').pop()
+         return bookPath === this.bookID
        })
      }
    }

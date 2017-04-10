@@ -5,6 +5,7 @@ import Router from 'vue-router'
 
 import App from './App'
 import routes from './routes'
+import store from './store.js'
 
 Vue.use(Electron)
 Vue.use(Resource)
@@ -19,5 +20,8 @@ const router = new Router({
 /* eslint-disable no-new */
 new Vue({
   router,
-  ...App
+  ...App,
+  created: function () {
+    store.fetchBooksAction('https://standardebooks.org/opds/all')
+  }
 }).$mount('#app')

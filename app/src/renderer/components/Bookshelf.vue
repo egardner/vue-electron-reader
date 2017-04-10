@@ -1,7 +1,7 @@
 <template>
   <div class="bookshelf">
     <header class="bookshelf__header">
-      <h1>Recovering the Classics</h1>
+      <h1>Classic Literature from Standard Ebooks</h1>
     </header>
     <div class="bookshelf__grid">
       <template v-for="book in books">
@@ -13,12 +13,13 @@
 
 <script>
  import BookCover from './BookCover.vue'
+ import store from '../store.js'
  export default {
    name: 'bookshelf',
    components: { BookCover },
    data () {
      return {
-       books: require('../../../static/classics.json')
+       books: store.state.books
      }
    }
  }
@@ -36,7 +37,7 @@
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
-   justify-content: flex-start;
+   justify-content: center;
    align-items: baseline;
    margin: 1rem;
  }
