@@ -1,7 +1,7 @@
 <template>
   <div class="bookshelf">
     <header class="bookshelf__header">
-      <h1>Recovering the Classics: {{ $route.fullPath }}</h1>
+      <h1>Recovering the Classics</h1>
     </header>
     <div class="bookshelf__grid">
       <template v-for="book in books">

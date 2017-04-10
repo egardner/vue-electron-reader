@@ -1,7 +1,6 @@
 <template>
   <div class="book-cover">
-    <router-link
-        :to="{ path: 'books', params: book.id }">
+    <router-link :to="`/books/${book.id}`">
       <img alt="" :src="book.image"/>
     </router-link>
     <h3 class="book-cover__title">{{book.title}}</h3>

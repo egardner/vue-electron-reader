@@ -5,6 +5,11 @@ export default [
     component: require('components/Bookshelf')
   },
   {
+    path: '/books/:id',
+    name: 'bookInfo',
+    component: require('components/BookInfo')
+  },
+  {
     path: '*',
     redirect: '/'
   }
