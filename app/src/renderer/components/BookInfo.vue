@@ -16,15 +16,12 @@
 
 <script>
  import _ from 'lodash'
- import store from '../store.js'
  export default {
    name: 'book-info',
-   data () {
-     return {
-       books: store.state.books
-     }
-   },
    computed: {
+     books () {
+       return this.$store.state.books
+     },
      bookID () {
        return this.$route.params.id
      },

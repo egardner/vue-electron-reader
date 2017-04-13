@@ -14,9 +14,6 @@
    name: 'book-cover',
    components: {},
    props: ['book'],
-   data () {
-     return {}
-   },
    computed: {
      coverThumbnail () {
        let urlPrefix = 'https://standardebooks.org'
