@@ -1,6 +1,6 @@
 <template>
   <div class="book-cover">
-    <router-link :to="`/books/${bookPath}`">
+    <router-link :to="`/books/${book.id}`">
       <img class="book-cover__image" :alt="book.title" :src="coverThumbnail"/>
     </router-link>
     <h3 class="book-cover__title">{{book.title}}</h3>
@@ -22,9 +22,6 @@
        })
 
        if (thumbnailLink) { return `${urlPrefix}${thumbnailLink.href}` }
-     },
-     bookPath () {
-       return this.book.id.split('/').pop()
      }
    }
  }

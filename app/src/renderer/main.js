@@ -4,6 +4,7 @@ import Electron from 'vue-electron'
 import Resource from 'vue-resource'
 import Router from 'vue-router'
 import https from 'https'
+import crypto from 'crypto'
 import xml2js from 'xml2js'
 
 import App from './App'
@@ -20,6 +21,7 @@ Vue.config.debug = true
 // Setup the router
 const router = new Router({
   scrollBehavior: () => ({ y: 0 }),
+  mode: 'history',
   routes
 })
 
@@ -53,8 +55,12 @@ const store = new Vuex.Store({
         response.on('end', () => {
           parser.parseString(body, (err, result) => {
             if (err) { console.log(err) }
-            result.feed.entry.forEach((item) => { newBooks.push(item) })
-            // This is how you mutate the application state in an action:
+            result.feed.entry.forEach((item) => {
+              // Hash the book IDs for uniqueness (they come as URLs)
+              let hash = crypto.createHash('md5').update(item.id).digest('hex')
+              item.id = hash
+              newBooks.push(item)
+            })
             context.commit('updateBooks', newBooks)
           })
         })
