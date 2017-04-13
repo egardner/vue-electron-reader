@@ -13,13 +13,12 @@
 
 <script>
  import BookCover from './BookCover.vue'
- import store from '../store.js'
  export default {
    name: 'bookshelf',
    components: { BookCover },
-   data () {
-     return {
-       books: store.state.books
+   computed: {
+     books () {
+       return this.$store.state.books
      }
    }
  }
