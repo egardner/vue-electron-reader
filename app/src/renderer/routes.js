@@ -10,6 +10,11 @@ export default [
     component: require('components/BookInfo')
   },
   {
+    path: '/books/:id/read',
+    name: 'reader',
+    component: require('components/reader')
+  },
+  {
     path: '*',
     redirect: '/'
   }

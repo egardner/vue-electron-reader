@@ -10,7 +10,11 @@
           <div class="book-info__main__summary__contents">
             <h1 class="title is-1">{{ book.title }}</h1>
             <h2 class="subtitle is-3">{{ book.author.name }}</h2>
-            <p>{{ book.summary['_'] }}</p>
+            <p class="book-info-summary-text">{{ book.summary['_'] }}</p>
+            <router-link :to="`/books/${book.id}/read`"
+                         class="button is-info">
+              Start Reading
+            </router-link>
           </div>
         </div>
       </div>
@@ -49,16 +53,16 @@
 
        if (imageLink) { return `${urlPrefix}${imageLink.href}` }
      },
-     epubURL () {
-       let epubLinks = _.filter(this.book.link, (item) => {
-         return item.type === 'application/epub+zip'
-       })
-       return epubLinks
-     }
-   },
-   methods: {
-     goBack () {
-       this.$router.go(-1)
+     epubLink () {
+       return _
+         .chain(this.book.link)
+         .filter((item) => { return item.type === 'application/epub+zip' })
+         .find((link) => {
+           let href = link.href
+           let ext = href.split('/').pop().split('.').pop()
+           return ext === 'epub'
+         })
+         .value()
      }
    }
  }
@@ -106,12 +110,9 @@
    max-width: 550px;
  }
 
- .book-info__main__summary__contents .subtitle {
-   margin-bottom: 1.5rem;
- }
-
- .book-info__main__summary__contents p {
+ .book-info-summary-text {
    font-size: 1.25em;
+   margin: 1.5em 0;
  }
 
  .book-info__loading {
