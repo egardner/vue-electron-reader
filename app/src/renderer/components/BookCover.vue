@@ -36,6 +36,7 @@
  }
 
  .book-cover__image {
+   box-shadow: 1px 2px 2px #666;
    max-width: 10rem;
  }
 
