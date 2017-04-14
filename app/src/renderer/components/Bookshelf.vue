@@ -1,7 +1,6 @@
 <template>
   <div class="bookshelf">
     <header class="bookshelf__header">
-      <h1>Classic Literature from Standard Ebooks</h1>
       <select v-model="selection" id="" name="">
         <option value="ALL">All Books</option>
         <option v-for="category in categories" :value="category"> {{ category }}</option>

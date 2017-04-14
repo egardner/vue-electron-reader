@@ -2,7 +2,6 @@
   <div class="book-info">
     <header class="book-info__header">
       <h1>{{ book.title }}</h1>
-      <button v-on:click="goBack">Back</button>
     </header>
     <main class="book-info__main">
       <div class="book-info__image" >
@@ -32,7 +31,7 @@
      },
      book () {
        return _.find(this.books, (b) => {
-         let bookPath = b.id.split('/').pop()
+         let bookPath = b.id
          return bookPath === this.bookID
        })
      },
@@ -43,6 +42,12 @@
        })
 
        if (imageLink) { return `${urlPrefix}${imageLink.href}` }
+     },
+     epubURL () {
+       let epubLinks = _.filter(this.book.link, (item) => {
+         return item.type === 'application/epub+zip'
+       })
+       return epubLinks
      }
    },
    methods: {

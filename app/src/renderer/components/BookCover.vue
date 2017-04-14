@@ -11,7 +11,7 @@
 <script>
  import _ from 'lodash'
  export default {
-   name: 'book-cover',
+   name: 'bookcover',
    components: {},
    props: ['book'],
    computed: {

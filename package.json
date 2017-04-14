@@ -107,6 +107,7 @@
     "webpack-dev-server": "^2.3.0"
   },
   "dependencies": {
+    "bulma": "^0.4.0",
     "lodash": "^4.17.4",
     "vuex": "^2.3.0",
     "xml2js": "^0.4.17"

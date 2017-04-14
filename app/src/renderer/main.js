@@ -4,11 +4,12 @@ import Electron from 'vue-electron'
 import Resource from 'vue-resource'
 import Router from 'vue-router'
 import https from 'https'
-import crypto from 'crypto'
 import xml2js from 'xml2js'
 
 import App from './App'
 import routes from './routes'
+
+import 'bulma/css/bulma.css'
 
 Vue.use(Electron)
 Vue.use(Resource)
@@ -55,10 +56,9 @@ const store = new Vuex.Store({
         response.on('end', () => {
           parser.parseString(body, (err, result) => {
             if (err) { console.log(err) }
-            result.feed.entry.forEach((item) => {
-              // Hash the book IDs for uniqueness (they come as URLs)
-              let hash = crypto.createHash('md5').update(item.id).digest('hex')
-              item.id = hash
+            result.feed.entry.forEach((item, index) => {
+              // Ensure uniqueness by adding the array index to the title string
+              item.id = item.id.split('/').pop() + '-' + index
               newBooks.push(item)
             })
             context.commit('updateBooks', newBooks)
