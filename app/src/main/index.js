@@ -14,8 +14,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
-    minWidth: 400,
-    minHeight: 400,
+    minWidth: 800,
+    minHeight: 600,
     vibrancy: 'appearance-based',
     type: 'textured'
   })

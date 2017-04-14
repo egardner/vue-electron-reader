@@ -1,6 +1,11 @@
 <template>
   <nav class="nav has-shadow">
     <div class="nav-left">
+      <a v-if="currentBook" v-on:click="goBack" class="nav-item">
+        <span class="icon">
+          <i class="fa fa-chevron-left"></i>
+        </span>
+      </a>
     </div>
     <div class="nav-center">
       <div class="nav-item">
@@ -20,10 +25,12 @@
      books () {
        return this.$store.state.books
      },
+     currentBook () {
+       return this.findBook(this.$route.params.id)
+     },
      pageTitle () {
-       let currentBook = this.findBook(this.$route.params.id)
-       if (currentBook) {
-         return currentBook.title
+       if (this.currentBook) {
+         return this.currentBook.title
        } else {
          return 'Standard Ebooks'
        }
@@ -32,6 +39,9 @@
    methods: {
      findBook (id) {
        return _.find(this.books, (b) => { return b.id === id })
+     },
+     goBack () {
+       this.$router.go(-1)
      }
    }
  }
@@ -42,6 +52,7 @@
    background-color: #333;
    top: 0;
    left: 0;
+   position: fixed;
    width: 100%;
  }
 

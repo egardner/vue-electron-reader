@@ -1,27 +1,33 @@
 <template>
-  <div class="book-info">
-    <header class="book-info__header">
-      <h1>{{ book.title }}</h1>
-    </header>
-    <main class="book-info__main">
-      <div class="book-info__image" >
-        <img alt="" :src="coverImage"/>
-      </div>
-      <div class="book-info__summary">
-        <div class="book-info__summary__contents">
-          <h1>{{ book.title }}</h1>
-          <h2>{{ book.author.name }}</h2>
-          <p>{{ book.summary['_'] }}</p>
+  <div>
+    <nav-bar></nav-bar>
+    <div v-if="book" class="book-info">
+      <div class="book-info__main">
+        <div class="book-info__main__image" >
+          <img alt="" :src="coverImage"/>
+        </div>
+        <div class="book-info__main__summary">
+          <div class="book-info__main__summary__contents">
+            <h1 class="title is-1">{{ book.title }}</h1>
+            <h2 class="subtitle is-3">{{ book.author.name }}</h2>
+            <p>{{ book.summary['_'] }}</p>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
+    <div v-else class="book-info__loading">
+      <h1 class="title">Loading</h1>
+    </div>
   </div>
+
 </template>
 
 <script>
  import _ from 'lodash'
+ import NavBar from './NavBar.vue'
  export default {
    name: 'bookinfo',
+   components: { NavBar },
    computed: {
      books () {
        return this.$store.state.books
@@ -58,49 +64,69 @@
  }
 </script>
 
-<style scoped>
+<style>
  .book-info {
-   display: flex;
-   flex-direction: column;
-   width: 100vw;
-   height: 100vh;
- }
-
- .book-info__header {
-   flex: 0 0 60px;
+   position: absolute;
+   left: 0;
+   top: 0;
+   height: 100%;
+   padding-top: 50px;
+   width: 100%;
  }
 
  .book-info__main {
-   flex: 1 auto 400px;
-   height: 100%;
    display: flex;
-   flex-direction: row;
-   align-items: center;
+   height: 100%;
  }
 
- .book-info__image {
-   display: flex;
-   height: 100%;
+ .book-info__main__image {
    align-items: center;
+   display: flex;
+   flex-direction: column;
+   flex: 1;
    justify-content: center;
-   flex: 0 0 50%;
  }
 
- .book-info__image img {
+ .book-info__main__image img {
    box-shadow: 2px 3px 2px #666;
    display: block;
-   height: 80%;
+   max-height: 80%;
    width: auto;
  }
 
- .book-info__summary {
-   flex: 0 0 50%;
- }
-
- .book-info__summary__contents {
-   height: 80%;
-   margin: 5rem;
+ .book-info__main__summary {
+   flex: 1;
+   align-self: center;
+   padding: 0 2em;
    text-align: left;
  }
 
+ .book-info__main__summary__contents {
+   margin: 0 auto;
+   max-width: 550px;
+ }
+
+ .book-info__main__summary__contents .subtitle {
+   margin-bottom: 1.5rem;
+ }
+
+ .book-info__main__summary__contents p {
+   font-size: 1.25em;
+ }
+
+ .book-info__loading {
+   align-items: center;
+   display: flex;
+   flex: 0 0 100%;
+   height: 100%;
+   justify-content: center;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+ }
+
+ .book-info__loading .title {
+   max-width: 50%;
+ }
 </style>

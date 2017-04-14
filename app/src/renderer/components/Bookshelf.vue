@@ -1,5 +1,6 @@
 <template>
   <div class="bookshelf">
+    <nav-bar></nav-bar>
     <header class="bookshelf__header">
       <select v-model="selection" id="" name="">
         <option value="ALL">All Books</option>
@@ -16,10 +17,11 @@
 
 <script>
  import BookCover from './BookCover.vue'
+ import NavBar from './NavBar.vue'
  import _ from 'lodash'
  export default {
    name: 'bookshelf',
-   components: { BookCover },
+   components: { BookCover, NavBar },
    data () {
      return {
        selection: 'ALL'
@@ -67,11 +69,19 @@
 </script>
 
 <style scoped>
+ .bookshelf {
+   left: 0;
+   position: absolute;
+   top: 50px;
+   width: 100%;
+ }
+
  .bookshelf__header {
-   margin-top: 1rem;
+   background-color: #ccc;
+   border-bottom: solid 1px #999;
    margin-bottom: 1rem;
+   padding-top: 1rem;
    padding-bottom: 1rem;
-   border-bottom: solid 1px #ccc;
  }
 
  .bookshelf__grid {

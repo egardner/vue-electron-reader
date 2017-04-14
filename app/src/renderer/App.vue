@@ -1,40 +1,35 @@
 <template>
   <div id="#app">
-    <nav-bar></nav-bar>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
- import NavBar from './components/NavBar.vue'
  export default {
-   components: { NavBar }
+   components: {}
  }
 </script>
 
 <style>
-  @import url(https://fonts.googleapis.com/css?family=Lato:300);
+ @import url(https://fonts.googleapis.com/css?family=Lato:300);
 
-  * {
-    margin: 0;
-    padding: 0;
-  }
+ * {
+   margin: 0;
+   padding: 0;
+ }
 
-  html,
-  body { min-height: 100%; }
+ html,
+ body {
+   background-color: transparent;
+   height: 100%;
+ }
 
-  body {
-    align-items: center;
-    /* background: */
-    /* radial-gradient( */
-    /* ellipse at center, */
-    /* rgba(255, 255, 255, 1) 0%, */
-    /* rgba(229, 229, 229, 1) 100% */
-    /* ); */
-    /* background-position: center; */
-    display: flex;
-    font-family: Lato, Helvetica, sans-serif;
-    justify-content: center;
-    text-align: center;
-  }
+ body {
+   align-items: center;
+   display: flex;
+   font-family: Lato, Helvetica, sans-serif;
+   justify-content: center;
+   text-align: center;
+   padding-top: 50px;
+ }
 </style>

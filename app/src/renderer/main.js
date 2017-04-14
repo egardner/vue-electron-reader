@@ -10,6 +10,7 @@ import App from './App'
 import routes from './routes'
 
 import 'bulma/css/bulma.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(Electron)
 Vue.use(Resource)
@@ -22,7 +23,9 @@ Vue.config.debug = true
 // Setup the router
 const router = new Router({
   scrollBehavior: () => ({ y: 0 }),
-  mode: 'history',
+  // Enabling history mode seems to break live-reload due to a
+  // content security policy error. Why is this happening?
+  // mode: 'history',
   routes
 })
 
@@ -57,11 +60,11 @@ const store = new Vuex.Store({
           parser.parseString(body, (err, result) => {
             if (err) { console.log(err) }
             result.feed.entry.forEach((item, index) => {
-              // Ensure uniqueness by adding the array index to the title string
               item.id = item.id.split('/').pop() + '-' + index
               newBooks.push(item)
             })
             context.commit('updateBooks', newBooks)
+            console.log('Books updated')
           })
         })
       })
