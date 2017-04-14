@@ -33,6 +33,9 @@
    name: 'bookinfo',
    components: { NavBar },
    computed: {
+     baseURL () {
+       return this.$store.state.baseURL
+     },
      books () {
        return this.$store.state.books
      },
@@ -46,23 +49,11 @@
        })
      },
      coverImage () {
-       let urlPrefix = 'https://standardebooks.org'
        let imageLink = _.find(this.book.link, (item) => {
          return item.rel === 'http://opds-spec.org/image'
        })
 
-       if (imageLink) { return `${urlPrefix}${imageLink.href}` }
-     },
-     epubLink () {
-       return _
-         .chain(this.book.link)
-         .filter((item) => { return item.type === 'application/epub+zip' })
-         .find((link) => {
-           let href = link.href
-           let ext = href.split('/').pop().split('.').pop()
-           return ext === 'epub'
-         })
-         .value()
+       if (imageLink) { return `${this.baseURL}${imageLink.href}` }
      }
    }
  }

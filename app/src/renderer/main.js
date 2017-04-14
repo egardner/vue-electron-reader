@@ -9,6 +9,7 @@ import xml2js from 'xml2js'
 import App from './App'
 import routes from './routes'
 
+import 'url'
 import 'bulma/css/bulma.css'
 import 'font-awesome/css/font-awesome.min.css'
 
@@ -36,12 +37,16 @@ const store = new Vuex.Store({
   // properties, since they are really functions that check the current
   // state of that property in real time.
   state: {
-    books: []
+    books: [],
+    baseURL: ''
   },
   // Mutations are synchronous
   mutations: {
     updateBooks (state, books) {
       state.books = books
+    },
+    updateBaseURL (state, baseURL) {
+      state.baseURL = baseURL
     }
   },
   // Actions can be asynchronous, as below
@@ -55,6 +60,10 @@ const store = new Vuex.Store({
       https.get(url, (response) => {
         let body = ''
         let newBooks = []
+
+        let baseURL = new URL(url).origin
+        context.commit('updateBaseURL', baseURL)
+
         response.on('data', function (d) { body += d })
         response.on('end', () => {
           parser.parseString(body, (err, result) => {
