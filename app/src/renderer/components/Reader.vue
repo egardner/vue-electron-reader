@@ -1,14 +1,22 @@
 <template>
   <div>
     <nav-bar></nav-bar>
-    Reading!
+    <div v-if="epub" class="epub">
+      <h1>Contents</h1>
+      <ul>
+        <li v-for="item in toc">{{ item.label }}</li>
+      </ul>
+    </div>
+    <div v-else class="epub-loading">
+      <h1>Loading...</h1>
+    </div>
   </div>
 </template>
 
 <script>
  import https from 'https'
  import fs from 'fs'
- import path from 'path'
+ // import path from 'path'
  import _ from 'lodash'
  import ePub from 'epubjs'
  import { remote } from 'electron'
@@ -21,6 +29,8 @@
    components: { NavBar },
    data () {
      return {
+       epub: undefined,
+       toc: []
      }
    },
    computed: {
@@ -51,13 +61,6 @@
          .value()
 
        if (epubLink) { return `${this.baseURL}${epubLink.href}` }
-     },
-     epub () {
-       if (!this.epubLink) {
-         return false
-       } else {
-         return ePub(this.epubLink)
-       }
      }
    },
    methods: {
@@ -72,16 +75,26 @@
          fs.unlink(dest) // Delete the file async. (But we don't check the result)
          if (cb) cb(err.message)
        })
+     },
+     renderEpub (url) {
+       this.epub = ePub(this.epubLink)
+       this.epub.loaded.navigation.then((toc) => {
+         toc.forEach((chapter) => {
+           this.toc.push({ label: chapter.label, href: chapter.href })
+         })
+       })
      }
    },
    mounted () {
-     console.log(app.getName())
-     let fileName = this.epubLink.split('/').pop()
-     let destPath = path.join(app.getPath('userData'), fileName)
-     this.downloadFile(this.epubLink, destPath, () => {
+     console.log(app.getPath('userData'))
+     this.renderEpub(this.epubLink)
+     // let fileName = this.epubLink.split('/').pop()
+     // let destPath = path.join(app.getPath('userData'), fileName)
+     // this.downloadFile(this.epubLink, destPath, () => {
        // Do something with the file here
-       console.log(`File downloaded to ${destPath}`)
-     })
+       // console.log(`File downloaded to ${destPath}`)
+       // this.epub = ePub(this.epubLink)
+     // })
    }
  }
 </script>
