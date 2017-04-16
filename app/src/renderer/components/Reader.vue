@@ -2,10 +2,14 @@
   <div>
     <nav-bar></nav-bar>
     <div v-if="epub" class="epub">
-      <h1>Contents</h1>
-      <ul>
-        <li v-for="item in toc">{{ item.label }}</li>
-      </ul>
+      <div class="epub__cover" id="stage">
+      </div>
+      <div class="epub__contents">
+        <div id="contents" v-html="currentContents">
+        </div>
+        <button>Previous</button>
+        <button>Next</button>
+      </div>
     </div>
     <div v-else class="epub-loading">
       <h1>Loading...</h1>
@@ -14,11 +18,12 @@
 </template>
 
 <script>
+ /* eslint-disable no-unused-vars */
  import https from 'https'
  import fs from 'fs'
- // import path from 'path'
+ import path from 'path'
  import _ from 'lodash'
- import ePub from 'epubjs'
+ import Epub from 'epubjs'
  import { remote } from 'electron'
  import NavBar from './NavBar.vue'
 
@@ -29,8 +34,10 @@
    components: { NavBar },
    data () {
      return {
-       epub: undefined,
-       toc: []
+       epub: new Epub(),
+       spine: null,
+       currentLocation: null,
+       currentContents: null
      }
    },
    computed: {
@@ -64,30 +71,42 @@
      }
    },
    methods: {
+     // Not currently being used, but saving in case it is needed later
      downloadFile (url, dest, cb) {
        let file = fs.createWriteStream(dest)
        https.get(url, function (response) {
          response.pipe(file)
          file.on('finish', function () {
-           file.close(cb)  // close() is async, call cb after close completes.
+           file.close(cb)
          })
-       }).on('error', function (err) { // Handle errors
-         fs.unlink(dest) // Delete the file async. (But we don't check the result)
+       }).on('error', function (err) {
+         fs.unlink(dest)
          if (cb) cb(err.message)
        })
      },
-     renderEpub (url) {
-       this.epub = ePub(this.epubLink)
-       this.epub.loaded.navigation.then((toc) => {
-         toc.forEach((chapter) => {
-           this.toc.push({ label: chapter.label, href: chapter.href })
+     loadEpub (url) {
+       // Load the epub file
+       this.epub.open(this.epubLink)
+
+       // Do stuff once it's ready
+       this.epub.ready.then((book) => {
+         let [manifest, spine, metadata, cover, navigation, resources] = book
+         this.spine = spine
+         this.currentLocation = spine.items[0].href
+       })
+     },
+     updateContents () {
+       this.epub.ready.then(() => {
+         this.epub.load(this.currentLocation).then((contents) => {
+           this.currentContents = contents.documentElement.querySelector('body').innerHTML
          })
        })
      }
    },
    mounted () {
-     console.log(app.getPath('userData'))
-     this.renderEpub(this.epubLink)
+     this.loadEpub(this.epubLink)
+     this.updateContents()
+
      // let fileName = this.epubLink.split('/').pop()
      // let destPath = path.join(app.getPath('userData'), fileName)
      // this.downloadFile(this.epubLink, destPath, () => {
